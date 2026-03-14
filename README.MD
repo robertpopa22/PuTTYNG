@@ -34,4 +34,18 @@ Build output will be in: putty\Release\PuTTYNG.exe
 
 ## Maintained by
 
+<a href="https://geseidl.ro/servicii-it"><img src="https://geseidl.ro/assets/icons/logo-green.png" alt="Geseidl Consulting Group" height="40"></a>
+
 Modified PuTTY build for [mRemoteNG Community Edition](https://github.com/robertpopa22/mRemoteNG) SSH/Telnet integration. Maintained by [Geseidl IT Solutions](https://geseidl.ro/servicii-it), part of [Geseidl Consulting Group](https://geseidl.ro).
+
+---
+
+<p align="center">
+  <a href="https://make-it-count.ro">
+    <img src="https://geseidl.ro/assets/icons/makeitcount-amprenta-gold.png" alt="makeitcount" height="60">
+  </a>
+  <br>
+  <sub><em>We believe great tools should be shared. Every contribution counts.</em></sub>
+  <br>
+  <sub><a href="https://make-it-count.ro">make-it-count.ro</a></sub>
+</p>
