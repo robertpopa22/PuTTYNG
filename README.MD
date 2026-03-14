@@ -31,3 +31,7 @@ OR
 - run PuTTYNG.ps1
 
 Build output will be in: putty\Release\PuTTYNG.exe
+
+## Maintained by
+
+Modified PuTTY build for [mRemoteNG Community Edition](https://github.com/robertpopa22/mRemoteNG) SSH/Telnet integration. Maintained by [Geseidl IT Solutions](https://geseidl.ro/servicii-it), part of [Geseidl Consulting Group](https://geseidl.ro).
