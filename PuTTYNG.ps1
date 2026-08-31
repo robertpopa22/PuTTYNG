@@ -1,4 +1,10 @@
-﻿Function Write-CustomError()
+﻿param(
+    # Upstream PuTTY tag to build from. Pinning to a release tag makes the build
+    # reproducible and auditable; building from HEAD picks up unreleased code.
+    [string]$Tag = '0.85'
+)
+
+Function Write-CustomError()
 {
 <#
 .Synopsis
@@ -81,8 +87,17 @@ catch {
      Write-CustomError -UserMessage 'There was an error' -ErrorObject $_ -FullDetail
 }
 
-#Get version of last update
+#Pin the requested release tag (reproducible build), then read it back for versioning
 cd putty
+if ($Tag) {
+    git.exe checkout --quiet $Tag 2>&1 | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "ERROR: tag '$Tag' not found in upstream putty" -ForegroundColor Red
+        cd ..
+        exit 1
+    }
+    Write-Host "Checked out upstream tag $Tag"
+}
 $getLastTag = git.exe describe --tags --match="*.*" --abbrev=0 HEAD 2>&1
 cd ..
 
@@ -91,6 +106,12 @@ if (Test-Path -LiteralPath $workFolder) {
     Write-Host "Clone completed, folder exist, starting modification process"
     #Add mRemoteNG required changes
     $workFile = "$workFolder\cmdline.c"
+    # NOTE: the old -auth-plugin block was removed from this patch. It referenced
+    # CONF_auth_plugin, a config key that only existed in the historical full-source
+    # fork - vanilla upstream (0.85) does not define it, so the patched tree no longer
+    # compiled. The binary this script produces reports InternalName "PuTTY", and
+    # mRemoteNG only ever passes -auth-plugin to a binary detected as real PuTTYNG,
+    # so the option was unreachable here anyway.
     $newContent = '
     #ifdef PUTTYNG
 	    if (!stricmp(p, "-hwndparent")) {
@@ -98,13 +119,6 @@ if (Test-Path -LiteralPath $workFolder) {
 		    hwnd_parent = atoi(value);
 		    return 2;
 	    }
-        if (!strcmp(p, "-auth-plugin") || !strcmp(p, "-auth_plugin")) {
-            RETURN(2);
-            UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
-            SAVEABLE(0);
-            conf_set_str(conf, CONF_auth_plugin, value);
-            return 2;
-        }
     #endif
 
     if (!strcmp(p, "-load")) {'
