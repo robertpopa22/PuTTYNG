@@ -1,0 +1,6 @@
+# Clona de lucru PuTTY creata de PuTTYNG.ps1 (vezi README) — NU se comite
+putty/
+
+# Artefacte de build
+build-full.log
+Release/
